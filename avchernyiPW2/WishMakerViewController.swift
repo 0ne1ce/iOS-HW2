@@ -29,6 +29,14 @@ final class WishMakerViewController: UIViewController {
         static let titleTop: CGFloat = 30
         
         static let fontSize: Double = 32
+        
+        static let buttonBottom: CGFloat = -270
+        static let buttonTrailing: CGFloat = -40
+        static let buttonHeight: CGFloat = 55
+        static let buttonWidth: CGFloat = 120
+        static let buttonCornerRadius: CGFloat = 15
+        static let buttonFontSize: CGFloat = 16
+        static let buttonAlpha: CGFloat = 0.85
     }
 
     //MARK: - Lifecycle
@@ -105,17 +113,17 @@ final class WishMakerViewController: UIViewController {
         
         button.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            button.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -270),
-            button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40),
-            button.heightAnchor.constraint(equalToConstant: 55),
-            button.widthAnchor.constraint(equalToConstant: 120),
+            button.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: Constants.buttonBottom),
+            button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: Constants.buttonTrailing),
+            button.heightAnchor.constraint(equalToConstant: Constants.buttonHeight),
+            button.widthAnchor.constraint(equalToConstant: Constants.buttonWidth),
         ])
-        button.layer.cornerRadius = 15
+        button.layer.cornerRadius = Constants.buttonCornerRadius
         button.backgroundColor = .systemGray
         button.setTitle("Sliders off/on", for: .normal)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: Constants.buttonFontSize)
         button.setTitleColor(.white, for: .normal)
-        button.alpha = 0.85
+        button.alpha = Constants.buttonAlpha
     }
 }
 
