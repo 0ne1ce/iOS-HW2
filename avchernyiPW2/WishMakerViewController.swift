@@ -9,10 +9,13 @@ import UIKit
 
 //MARK: - WishMakerViewController
 final class WishMakerViewController: UIViewController {
+    //MARK: - Variables
+    private let button = UIButton(type: .system)
+    
     //MARK: - Constants
     enum Constants {
         static let sliderMin: Double = 0
-        static let sliderMax: Double = 1
+        static let sliderMax: Double = 255
         
         static let red: String = "Red"
         static let blue: String = "Blue"
@@ -23,7 +26,6 @@ final class WishMakerViewController: UIViewController {
         static let stackBottom: CGFloat = -40
         static let stackLeading: CGFloat = 20
         
-        static let titleLeading: CGFloat = 20
         static let titleTop: CGFloat = 30
         
         static let fontSize: Double = 32
@@ -42,6 +44,7 @@ final class WishMakerViewController: UIViewController {
         
         configureTitle()
         configureSlider()
+        configureButton()
     }
     
     private func configureTitle() {
@@ -55,7 +58,6 @@ final class WishMakerViewController: UIViewController {
         view.addSubview(title)
         NSLayoutConstraint.activate([
             title.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            title.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.titleLeading),
             title.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.titleTop)
         ])
     }
@@ -72,7 +74,7 @@ final class WishMakerViewController: UIViewController {
         let sliderBlue = CustomSlider(title: Constants.blue, min: Constants.sliderMin, max: Constants.sliderMax)
         let sliderGreen = CustomSlider(title: Constants.green, min: Constants.sliderMin, max: Constants.sliderMax)
         
-        for slider in [sliderRed, sliderBlue, sliderGreen] {
+        for slider in [sliderRed, sliderGreen, sliderBlue] {
             stack.addArrangedSubview(slider)
         }
         
@@ -83,8 +85,37 @@ final class WishMakerViewController: UIViewController {
         ])
         
         sliderRed.valueChanged = { [weak self] value in
-            self?.view.backgroundColor = .systemTeal
+            self?.view.backgroundColor = .systemRed
+            
         }
+        
+        sliderBlue.valueChanged = { [weak self] value in
+            self?.view.backgroundColor = .systemBlue
+            
+        }
+        
+        sliderGreen.valueChanged = { [weak self] value in
+            self?.view.backgroundColor = .systemGreen
+            
+        }
+    }
+    
+    private func configureButton() {
+        view.addSubview(button)
+        
+        button.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            button.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -270),
+            button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40),
+            button.heightAnchor.constraint(equalToConstant: 55),
+            button.widthAnchor.constraint(equalToConstant: 120),
+        ])
+        button.layer.cornerRadius = 15
+        button.backgroundColor = .systemGray
+        button.setTitle("Sliders off/on", for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        button.setTitleColor(.white, for: .normal)
+        button.alpha = 0.85
     }
 }
 
