@@ -11,6 +11,9 @@ import UIKit
 final class WishMakerViewController: UIViewController {
     //MARK: - Variables
     private let button = UIButton(type: .system)
+    private let stack = UIStackView()
+    private let titleLabel = UILabel()
+    private var buttonCounter: Int = 0
     
     //MARK: - Constants
     enum Constants {
@@ -56,22 +59,20 @@ final class WishMakerViewController: UIViewController {
     }
     
     private func configureTitle() {
-        let title = UILabel()
-        title.translatesAutoresizingMaskIntoConstraints = false
-        title.text = Constants.wishTitleText
-        title.font = UIFont.systemFont(ofSize: Constants.fontSize)
-        title.textColor = .white
-        title.font = UIFont.boldSystemFont(ofSize: Constants.fontSize)
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.text = Constants.wishTitleText
+        titleLabel.font = UIFont.systemFont(ofSize: Constants.fontSize)
+        titleLabel.textColor = .white
+        titleLabel.font = UIFont.boldSystemFont(ofSize: Constants.fontSize)
         
-        view.addSubview(title)
+        view.addSubview(titleLabel)
         NSLayoutConstraint.activate([
-            title.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            title.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.titleTop)
+            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.titleTop)
         ])
     }
     
     private func configureSlider() {
-        let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .vertical
         view.addSubview(stack)
@@ -124,67 +125,20 @@ final class WishMakerViewController: UIViewController {
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: Constants.buttonFontSize)
         button.setTitleColor(.white, for: .normal)
         button.alpha = Constants.buttonAlpha
-    }
-}
-
-//MARK: - CustomSlider
-final class CustomSlider: UIView {
-    //MARK: - Constants
-    enum Constants {
-        static let titleViewTop: CGFloat = 10
-        static let titleViewLeading: CGFloat = 20
         
-        static let sliderBottom: CGFloat = -10
-        static let sliderLeading: CGFloat = 20
-    }
-    
-    //MARK: - Properties
-    var valueChanged: ((Double) -> Void)?
-    
-    var slider = UISlider()
-    var titleView = UILabel()
-    
-    //MARK:- Initialization
-    init(title: String, min: Double, max: Double) {
-        super.init(frame: .zero)
-        titleView.text = title
-        slider.minimumValue = Float(min)
-        slider.maximumValue = Float(max)
-        slider.addTarget(self, action: #selector(sliderValueChanged), for: .valueChanged)
-        configureUI()
-    }
-    
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    //MARK: - Private functions
-    private func configureUI() {
-        backgroundColor = .white
-        translatesAutoresizingMaskIntoConstraints = false
-        
-        for view in [slider, titleView] {
-            addSubview(view)
-            view.translatesAutoresizingMaskIntoConstraints = false
-        }
-        
-        NSLayoutConstraint.activate([
-            titleView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            titleView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.titleViewTop),
-            titleView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.titleViewLeading),
-            
-            slider.topAnchor.constraint(equalTo: titleView.bottomAnchor),
-            slider.centerXAnchor.constraint(equalTo: centerXAnchor),
-            slider.bottomAnchor.constraint(equalTo: bottomAnchor, constant: Constants.sliderBottom),
-            slider.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.sliderLeading),
-            
-        ])
+        button.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
     }
     
     //MARK: - Actions
     @objc
-    private func sliderValueChanged() {
-        valueChanged?(Double(slider.value))
+    private func buttonPressed(_ sender: UIButton) {
+        if (buttonCounter % 2 == 0) {
+            stack.isHidden = true
+            buttonCounter += 1
+        }
+        else {
+            stack.isHidden = false
+            buttonCounter -= 1
+        }
     }
 }
