@@ -18,7 +18,8 @@ final class WishMakerViewController: UIViewController {
     private let secretTitle = UILabel()
     private var buttonCounter: Int = 0
     private var secretButtonCounter: Int = 0
-    private var  buttons: Array<UIButton> = []
+    private var buttons: Array<UIButton> = []
+    private var titleChanged: Bool = false
     
     private var buttonBottomConstraints: Array<NSLayoutConstraint> = []
     
@@ -59,6 +60,9 @@ final class WishMakerViewController: UIViewController {
         static let secretAnimationTime: Double = 1.8
         static let buttonsMoveAnimationTime: Double = 0.2
         static let colorSwitchTime: Double = 0.5
+        static let titleChangeTime: Double = 0.5
+        
+        static let visibleTitleBound: Float = 0.65
     }
 
     //MARK: - Lifecycle
@@ -70,7 +74,7 @@ final class WishMakerViewController: UIViewController {
 
     //MARK: - Private functions
     private func configureUI() {
-        view.backgroundColor = .systemPink
+        view.backgroundColor = .black
         
         configureTitle()
         configureSlider()
@@ -116,17 +120,56 @@ final class WishMakerViewController: UIViewController {
         
         sliderRed.valueChanged = { [weak self] value in
             self?.view.backgroundColor = UIColor(red: CGFloat(sliderRed.slider.value), green: CGFloat(sliderGreen.slider.value), blue: CGFloat(sliderBlue.slider.value), alpha: 1)
-            
+            if (sliderRed.slider.value > Constants.visibleTitleBound && sliderGreen.slider.value > Constants.visibleTitleBound && sliderBlue.slider.value > Constants.visibleTitleBound) {
+                UIView.animate(withDuration: Constants.titleChangeTime) {
+                    self?.titleLabel.textColor = .black
+                }
+                self?.titleChanged = true
+            }
+            else {
+                if (self?.titleChanged == true) {
+                    UIView.animate(withDuration: Constants.titleChangeTime) {
+                        self?.titleLabel.textColor = .white
+                    }
+                    self?.titleChanged = false
+                }
+            }
         }
         
         sliderBlue.valueChanged = { [weak self] value in
             self?.view.backgroundColor = UIColor(red: CGFloat(sliderRed.slider.value), green: CGFloat(sliderGreen.slider.value), blue: CGFloat(sliderBlue.slider.value), alpha: 1)
-            
+            if (sliderRed.slider.value > Constants.visibleTitleBound && sliderGreen.slider.value > Constants.visibleTitleBound && sliderBlue.slider.value > Constants.visibleTitleBound) {
+                UIView.animate(withDuration: Constants.titleChangeTime) {
+                    self?.titleLabel.textColor = .black
+                }
+                self?.titleChanged = true
+            }
+            else {
+                if (self?.titleChanged == true) {
+                    UIView.animate(withDuration: Constants.titleChangeTime) {
+                        self?.titleLabel.textColor = .white
+                    }
+                    self?.titleChanged = false
+                }
+            }
         }
         
         sliderGreen.valueChanged = { [weak self] value in
             self?.view.backgroundColor = UIColor(red: CGFloat(sliderRed.slider.value), green: CGFloat(sliderGreen.slider.value), blue: CGFloat(sliderBlue.slider.value), alpha: 1)
-            
+            if (sliderRed.slider.value > Constants.visibleTitleBound && sliderGreen.slider.value > Constants.visibleTitleBound && sliderBlue.slider.value > Constants.visibleTitleBound) {
+                UIView.animate(withDuration: Constants.titleChangeTime) {
+                    self?.titleLabel.textColor = .black
+                }
+                self?.titleChanged = true
+            }
+            else {
+                if (self?.titleChanged == true) {
+                    UIView.animate(withDuration: Constants.titleChangeTime) {
+                        self?.titleLabel.textColor = .white
+                    }
+                    self?.titleChanged = false
+                }
+            }
         }
     }
     
@@ -137,9 +180,6 @@ final class WishMakerViewController: UIViewController {
         for button in buttons {
             view.addSubview(button)
             button.translatesAutoresizingMaskIntoConstraints = false
-//            NSLayoutConstraint.activate([
-//                button.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: Constants.buttonBottom),
-//            ])
             buttonBottomConstraints.append(button.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: Constants.buttonBottom))
             buttonBottomConstraints.last?.isActive = true
             button.layer.cornerRadius = Constants.buttonCornerRadius
@@ -240,6 +280,10 @@ final class WishMakerViewController: UIViewController {
             buttonBottomConstraints[i].constant = Constants.buttonBottom
         }
         self.view.layoutIfNeeded()
+    }
+    
+    private func backgroundChangeBySlider() {
+        
     }
     
     //MARK: - Actions
