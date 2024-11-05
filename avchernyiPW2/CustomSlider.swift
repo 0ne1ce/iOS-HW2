@@ -28,6 +28,7 @@ final class CustomSlider: UIView {
     init(title: String, min: Double, max: Double) {
         super.init(frame: .zero)
         titleView.text = title
+        titleView.textColor = .white
         slider.minimumValue = Float(min)
         slider.maximumValue = Float(max)
         slider.addTarget(self, action: #selector(sliderValueChanged), for: .valueChanged)

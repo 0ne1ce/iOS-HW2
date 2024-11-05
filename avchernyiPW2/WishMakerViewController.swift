@@ -7,27 +7,9 @@
 
 import UIKit
 
-//MARK: - WishMakerViewController
+// MARK: - WishMakerViewController
 final class WishMakerViewController: UIViewController {
-    //MARK: - Variables
-    private let hidingButton = UIButton(type: .system)
-    private let randomButton = UIButton(type: .system)
-    private let secretButton = UIButton(type: .system)
-    private let stack = UIStackView()
-    private let titleLabel = UILabel()
-    private let secretTitle = UILabel()
-    private var hidingButtonCounter: Int = 0
-    private var secretButtonCounter: Int = 0
-    private var buttons: Array<UIButton> = []
-    private var titleChanged: Bool = false
-    
-    private let sliderRedVariable = CustomSlider(title: Constants.red, min: Constants.sliderMin, max: Constants.sliderMax)
-    private let sliderBlueVariable = CustomSlider(title: Constants.blue, min: Constants.sliderMin, max: Constants.sliderMax)
-    private let sliderGreenVariable = CustomSlider(title: Constants.green, min: Constants.sliderMin, max: Constants.sliderMax)
-    
-    private var buttonBottomConstraints: Array<NSLayoutConstraint> = []
-    
-    //MARK: - Constants
+    // MARK: - Constants
     enum Constants {
         static let sliderMin: Double = 0
         static let sliderMax: Double = 1
@@ -44,7 +26,7 @@ final class WishMakerViewController: UIViewController {
         static let randomHexSymbols: String = "0123456789ABCDEF"
         
         static let stackRadius: CGFloat = 20
-        static let stackBottom: CGFloat = -40
+        static let stackBottom: CGFloat = -80
         static let stackLeading: CGFloat = 20
         
         static let titleTop: CGFloat = 30
@@ -53,8 +35,9 @@ final class WishMakerViewController: UIViewController {
         static let fontSize: Double = 32
         static let secretTitleFontSize: Double = 52
         
-        static let buttonBottom: CGFloat = -270
-        static let buttonAnimatedBottom: CGFloat = -40
+        static let buttonBottom: CGFloat = -20
+        static let addWishButtonBottom: CGFloat = -80
+        static let buttonAnimatedBottom: CGFloat = 80
         static let buttonTrailing: CGFloat = -40
         static let secretButtonLeading: CGFloat = 40
         static let buttonHeight: CGFloat = 55
@@ -69,21 +52,44 @@ final class WishMakerViewController: UIViewController {
         static let titleChangeTime: Double = 0.5
         
         static let visibleTitleBound: Float = 0.65
+        
+        static let standardMultiplier: CGFloat = 1
     }
+    
+    // MARK: - Variables
+    private let hidingButton: UIButton = UIButton(type: .system)
+    private let randomButton: UIButton = UIButton(type: .system)
+    private let secretButton: UIButton = UIButton(type: .system)
+    private let addWishButton: UIButton = UIButton(type: .system)
+    private let stack: UIStackView = UIStackView()
+    private let titleLabel: UILabel = UILabel()
+    private let secretTitle: UILabel = UILabel()
+    private var hidingButtonCounter: Int = 0
+    private var secretButtonCounter: Int = 0
+    private var buttons: Array<UIButton> = []
+    private var titleChanged: Bool = false
+    
+    private let sliderRedVariable = CustomSlider(title: Constants.red, min: Constants.sliderMin, max: Constants.sliderMax)
+    private let sliderBlueVariable = CustomSlider(title: Constants.blue, min: Constants.sliderMin, max: Constants.sliderMax)
+    private let sliderGreenVariable = CustomSlider(title: Constants.green, min: Constants.sliderMin, max: Constants.sliderMax)
+    
+    private var buttonBottomConstraints: Array<NSLayoutConstraint> = []
 
-    //MARK: - Lifecycle
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
         
     }
 
-    //MARK: - Private functions
+    // MARK: - Private functions
     private func configureUI() {
         view.backgroundColor = .black
         
         configureTitle()
-        configureSlider()
+        configureAddWishButton()
+        addWishButtonPressed()
+        configureSliders()
         configureButtons()
         configureSecretTitle()
     }
@@ -102,7 +108,28 @@ final class WishMakerViewController: UIViewController {
         ])
     }
     
-    private func configureSlider() {
+    private func configureAddWishButton() {
+        view.addSubview(addWishButton)
+        addWishButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            addWishButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            addWishButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: Constants.addWishButtonBottom),
+            addWishButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: Constants.buttonTrailing),
+            addWishButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -Constants.buttonTrailing),
+            addWishButton.heightAnchor.constraint(equalToConstant: Constants.buttonHeight)
+        ])
+        addWishButton.layer.cornerRadius = Constants.buttonCornerRadius
+        addWishButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: Constants.buttonFontSize)
+        addWishButton.setTitleColor(.white, for: .normal)
+        addWishButton.backgroundColor = .systemGray
+        addWishButton.alpha = Constants.buttonAlpha
+        addWishButton.setTitle("My Wishes", for: .normal)
+        
+        addWishButton.addTarget(self, action: #selector(addWishButtonPressed), for: .touchUpInside)
+        
+    }
+    
+    private func configureSliders() {
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .vertical
         view.addSubview(stack)
@@ -124,24 +151,21 @@ final class WishMakerViewController: UIViewController {
         NSLayoutConstraint.activate([
             stack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             stack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.stackLeading),
-            stack.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: Constants.stackBottom)
+            stack.bottomAnchor.constraint(equalTo: addWishButton.topAnchor, constant: Constants.stackBottom)
         ])
         
         sliderRed.valueChanged = { [weak self] value in
-            self?.view.backgroundColor = UIColor(red: CGFloat(sliderRed.slider.value), green: CGFloat(sliderGreen.slider.value), blue: CGFloat(sliderBlue.slider.value), alpha: 1)
-            self?.sliderRedVariable.backgroundColor = UIColor(red: CGFloat(sliderRed.slider.value), green: CGFloat(sliderGreen.slider.value), blue: CGFloat(sliderBlue.slider.value), alpha: 1)
-            self?.sliderGreenVariable.backgroundColor = UIColor(red: CGFloat(sliderRed.slider.value), green: CGFloat(sliderGreen.slider.value), blue: CGFloat(sliderBlue.slider.value), alpha: 1)
-            self?.sliderBlueVariable.backgroundColor = UIColor(red: CGFloat(sliderRed.slider.value), green: CGFloat(sliderGreen.slider.value), blue: CGFloat(sliderBlue.slider.value), alpha: 1)
+            self?.changeBackgroundColor()
             if (sliderRed.slider.value > Constants.visibleTitleBound && sliderGreen.slider.value > Constants.visibleTitleBound && sliderBlue.slider.value > Constants.visibleTitleBound) {
                 UIView.animate(withDuration: Constants.titleChangeTime) {
-                    self?.titleLabel.textColor = .black
+                    self?.changeTitlesForLightBackground()
                 }
                 self?.titleChanged = true
             }
             else {
                 if (self?.titleChanged == true) {
                     UIView.animate(withDuration: Constants.titleChangeTime) {
-                        self?.titleLabel.textColor = .white
+                        self?.changeTitlesForDarkBackground()
                     }
                     self?.titleChanged = false
                 }
@@ -149,20 +173,17 @@ final class WishMakerViewController: UIViewController {
         }
         
         sliderBlue.valueChanged = { [weak self] value in
-            self?.view.backgroundColor = UIColor(red: CGFloat(sliderRed.slider.value), green: CGFloat(sliderGreen.slider.value), blue: CGFloat(sliderBlue.slider.value), alpha: 1)
-            self?.sliderRedVariable.backgroundColor = UIColor(red: CGFloat(sliderRed.slider.value), green: CGFloat(sliderGreen.slider.value), blue: CGFloat(sliderBlue.slider.value), alpha: 1)
-            self?.sliderGreenVariable.backgroundColor = UIColor(red: CGFloat(sliderRed.slider.value), green: CGFloat(sliderGreen.slider.value), blue: CGFloat(sliderBlue.slider.value), alpha: 1)
-            self?.sliderBlueVariable.backgroundColor = UIColor(red: CGFloat(sliderRed.slider.value), green: CGFloat(sliderGreen.slider.value), blue: CGFloat(sliderBlue.slider.value), alpha: 1)
+            self?.changeBackgroundColor()
             if (sliderRed.slider.value > Constants.visibleTitleBound && sliderGreen.slider.value > Constants.visibleTitleBound && sliderBlue.slider.value > Constants.visibleTitleBound) {
                 UIView.animate(withDuration: Constants.titleChangeTime) {
-                    self?.titleLabel.textColor = .black
+                    self?.changeTitlesForLightBackground()
                 }
                 self?.titleChanged = true
             }
             else {
                 if (self?.titleChanged == true) {
                     UIView.animate(withDuration: Constants.titleChangeTime) {
-                        self?.titleLabel.textColor = .white
+                        self?.changeTitlesForDarkBackground()
                     }
                     self?.titleChanged = false
                 }
@@ -170,20 +191,17 @@ final class WishMakerViewController: UIViewController {
         }
         
         sliderGreen.valueChanged = { [weak self] value in
-            self?.view.backgroundColor = UIColor(red: CGFloat(sliderRed.slider.value), green: CGFloat(sliderGreen.slider.value), blue: CGFloat(sliderBlue.slider.value), alpha: 1)
-            self?.sliderRedVariable.backgroundColor = UIColor(red: CGFloat(sliderRed.slider.value), green: CGFloat(sliderGreen.slider.value), blue: CGFloat(sliderBlue.slider.value), alpha: 1)
-            self?.sliderGreenVariable.backgroundColor = UIColor(red: CGFloat(sliderRed.slider.value), green: CGFloat(sliderGreen.slider.value), blue: CGFloat(sliderBlue.slider.value), alpha: 1)
-            self?.sliderBlueVariable.backgroundColor = UIColor(red: CGFloat(sliderRed.slider.value), green: CGFloat(sliderGreen.slider.value), blue: CGFloat(sliderBlue.slider.value), alpha: 1)
+            self?.changeBackgroundColor()
             if (sliderRed.slider.value > Constants.visibleTitleBound && sliderGreen.slider.value > Constants.visibleTitleBound && sliderBlue.slider.value > Constants.visibleTitleBound) {
                 UIView.animate(withDuration: Constants.titleChangeTime) {
-                    self?.titleLabel.textColor = .black
+                    self?.changeTitlesForLightBackground()
                 }
                 self?.titleChanged = true
             }
             else {
                 if (self?.titleChanged == true) {
                     UIView.animate(withDuration: Constants.titleChangeTime) {
-                        self?.titleLabel.textColor = .white
+                        self?.changeTitlesForDarkBackground()
                     }
                     self?.titleChanged = false
                 }
@@ -198,7 +216,7 @@ final class WishMakerViewController: UIViewController {
         for button in buttons {
             view.addSubview(button)
             button.translatesAutoresizingMaskIntoConstraints = false
-            buttonBottomConstraints.append(button.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: Constants.buttonBottom))
+            buttonBottomConstraints.append(button.bottomAnchor.constraint(equalTo: stack.topAnchor, constant: Constants.buttonBottom))
             buttonBottomConstraints.last?.isActive = true
             button.layer.cornerRadius = Constants.buttonCornerRadius
             button.titleLabel?.font = UIFont.boldSystemFont(ofSize: Constants.buttonFontSize)
@@ -287,10 +305,49 @@ final class WishMakerViewController: UIViewController {
         sliderRedVariable.slider.setValue(Float(newRgba.red), animated: true)
         sliderGreenVariable.slider.setValue(Float(newRgba.green), animated: true)
         sliderBlueVariable.slider.setValue(Float(newRgba.blue), animated: true)
+        if (sliderRedVariable.slider.value > Constants.visibleTitleBound && sliderGreenVariable.slider.value > Constants.visibleTitleBound && sliderBlueVariable.slider.value > Constants.visibleTitleBound) {
+            UIView.animate(withDuration: Constants.titleChangeTime) {
+                self.titleLabel.textColor = .black
+                self.sliderRedVariable.titleView.textColor = .black
+                self.sliderGreenVariable.titleView.textColor = .black
+                self.sliderBlueVariable.titleView.textColor = .black
+            }
+            titleChanged = true
+        }
+        else {
+            if (self.titleChanged == true) {
+                UIView.animate(withDuration: Constants.titleChangeTime) {
+                    self.changeTitlesForDarkBackground()
+                }
+                titleChanged = false
+            }
+        }
         view.backgroundColor = newColor
         sliderRedVariable.backgroundColor = newColor
         sliderGreenVariable.backgroundColor = newColor
         sliderBlueVariable.backgroundColor = newColor
+    }
+    
+    private func changeBackgroundColor() {
+        let currentColor: UIColor = UIColor(red: CGFloat(sliderRedVariable.slider.value), green: CGFloat(sliderGreenVariable.slider.value), blue: CGFloat(sliderBlueVariable.slider.value), alpha: 1)
+        self.view.backgroundColor = currentColor
+        self.sliderRedVariable.backgroundColor = currentColor
+        self.sliderGreenVariable.backgroundColor = currentColor
+        self.sliderBlueVariable.backgroundColor = currentColor
+    }
+    
+    private func changeTitlesForLightBackground() {
+        self.titleLabel.textColor = .black
+        sliderRedVariable.titleView.textColor = .black
+        sliderGreenVariable.titleView.textColor = .black
+        sliderBlueVariable.titleView.textColor = .black
+    }
+    
+    private func changeTitlesForDarkBackground() {
+        self.titleLabel.textColor = .white
+        self.sliderRedVariable.titleView.textColor = .white
+        self.sliderGreenVariable.titleView.textColor = .white
+        self.sliderBlueVariable.titleView.textColor = .white
     }
     
     private func uniqueHex() -> String {
@@ -311,7 +368,7 @@ final class WishMakerViewController: UIViewController {
         self.view.layoutIfNeeded()
     }
     
-    //MARK: - Actions
+    // MARK: - Actions
     @objc
     private func hidingButtonPressed(_ sender: UIButton) {
         if (hidingButtonCounter % 2 == 0) {
@@ -376,6 +433,7 @@ final class WishMakerViewController: UIViewController {
             sliderGreenVariable.slider.setValue(0, animated: false)
             sliderBlueVariable.slider.setValue(0, animated: false)
             if (hidingButtonCounter % 2 != 0) {
+                hidingButtonCounter = 0
                 buttonsMoveUp()
             }
             UIView.animate(
@@ -390,9 +448,14 @@ final class WishMakerViewController: UIViewController {
             secretButtonCounter -= 1
         }
     }
+    
+    @objc
+    private func addWishButtonPressed() {
+        present(WishStoringViewController(), animated: true)
+    }
 }
 
-//MARK: - UIColor
+// MARK: - UIColor
 extension UIColor {
     //MARK: - Variables
     var rgba: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
