@@ -13,6 +13,7 @@ final class WishStoringViewController: UIViewController {
     enum Constants {
         static let tableCornerRadius: CGFloat = 25
         static let tableOffset: CGFloat = 25
+        static let sections: Int = 2
     }
     
     // MARK: - Variables
@@ -59,15 +60,7 @@ extension WishStoringViewController: UITableViewDataSource {
         return wishCell
     }
     
-//    func numberOfSections(in tableView: UITableView) -> Int {
-//        return Constants.sections
-//    }
-    
-//    func numberOfRowsInSection(in tableView: UITableView) -> Int {
-//        return 1
-//    }
-    
-    func cellForRowAt(in tableView: UITableView) {
-        
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return Constants.sections
     }
 }
