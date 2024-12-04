@@ -11,7 +11,7 @@ import UIKit
 final class WishCalendarViewController: UIViewController {
     // MARK: - Constants
     enum Constants {
-        static let contentInset: UIEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        static let contentInset: UIEdgeInsets = UIEdgeInsets()
         static let collectionTop: CGFloat = 40
     }
     
@@ -49,7 +49,9 @@ final class WishCalendarViewController: UIViewController {
         NSLayoutConstraint.activate([
             collectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.collectionTop),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
     }
 }
