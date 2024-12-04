@@ -284,6 +284,7 @@ final class WishMakerViewController: UIViewController {
         hidingButton.isHidden = true
         randomButton.isHidden = true
         view.backgroundColor = Constants.secretColor
+        BackgroundColorModel.shared.backgroundColor = Constants.secretColor
         secretTitle.isHidden = false
     }
     
@@ -297,6 +298,7 @@ final class WishMakerViewController: UIViewController {
         sliderGreenVariable.backgroundColor = .black
         sliderBlueVariable.backgroundColor = .black
         secretTitle.isHidden = true
+        BackgroundColorModel.shared.backgroundColor = .black
     }
     
     private func randomBackground() {
@@ -326,6 +328,7 @@ final class WishMakerViewController: UIViewController {
         sliderRedVariable.backgroundColor = newColor
         sliderGreenVariable.backgroundColor = newColor
         sliderBlueVariable.backgroundColor = newColor
+        BackgroundColorModel.shared.backgroundColor = newColor
     }
     
     private func changeBackgroundColor() {
@@ -334,6 +337,7 @@ final class WishMakerViewController: UIViewController {
         self.sliderRedVariable.backgroundColor = currentColor
         self.sliderGreenVariable.backgroundColor = currentColor
         self.sliderBlueVariable.backgroundColor = currentColor
+        BackgroundColorModel.shared.backgroundColor = currentColor
     }
     
     private func changeTitlesForLightBackground() {
@@ -341,6 +345,7 @@ final class WishMakerViewController: UIViewController {
         sliderRedVariable.titleView.textColor = .black
         sliderGreenVariable.titleView.textColor = .black
         sliderBlueVariable.titleView.textColor = .black
+        BackgroundColorModel.shared.titleColor = .black
     }
     
     private func changeTitlesForDarkBackground() {
@@ -348,6 +353,7 @@ final class WishMakerViewController: UIViewController {
         self.sliderRedVariable.titleView.textColor = .white
         self.sliderGreenVariable.titleView.textColor = .white
         self.sliderBlueVariable.titleView.textColor = .white
+        BackgroundColorModel.shared.titleColor = .white
     }
     
     private func uniqueHex() -> String {
@@ -359,6 +365,7 @@ final class WishMakerViewController: UIViewController {
             buttonBottomConstraints[i].constant = Constants.buttonAnimatedBottom
         }
         self.view.layoutIfNeeded()
+        hidingButton.setTitle("Show", for: .normal)
     }
     
     private func buttonsMoveUp() {
@@ -366,6 +373,7 @@ final class WishMakerViewController: UIViewController {
             buttonBottomConstraints[i].constant = Constants.buttonBottom
         }
         self.view.layoutIfNeeded()
+        hidingButton.setTitle("Hide", for: .normal)
     }
     
     // MARK: - Actions
