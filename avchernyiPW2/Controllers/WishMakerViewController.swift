@@ -67,7 +67,7 @@ final class WishMakerViewController: UIViewController {
     private let secretTitle: UILabel = UILabel()
     private var hidingButtonCounter: Int = 0
     private var secretButtonCounter: Int = 0
-    private var buttons: Array<UIButton> = []
+    private var topSliderButtons: Array<UIButton> = []
     private var titleChanged: Bool = false
     
     private let sliderRedVariable = CustomSlider(title: Constants.red, min: Constants.sliderMin, max: Constants.sliderMax)
@@ -91,7 +91,7 @@ final class WishMakerViewController: UIViewController {
         configureScheduleButton()
         configureAddWishButton()
         configureSliders()
-        configureButtons()
+        configureTopSliderButtons()
         configureSecretTitle()
     }
     
@@ -231,11 +231,11 @@ final class WishMakerViewController: UIViewController {
         }
     }
     
-    private func configureButtons() {
-        buttons.append(hidingButton)
-        buttons.append(randomButton)
-        buttons.append(secretButton)
-        for button in buttons {
+    private func configureTopSliderButtons() {
+        topSliderButtons.append(hidingButton)
+        topSliderButtons.append(randomButton)
+        topSliderButtons.append(secretButton)
+        for button in topSliderButtons {
             view.addSubview(button)
             button.translatesAutoresizingMaskIntoConstraints = false
             buttonBottomConstraints.append(button.bottomAnchor.constraint(equalTo: stack.topAnchor, constant: Constants.buttonBottom))
@@ -352,6 +352,7 @@ final class WishMakerViewController: UIViewController {
         sliderGreenVariable.backgroundColor = newColor
         sliderBlueVariable.backgroundColor = newColor
         BackgroundColorModel.shared.backgroundColor = newColor
+        buttonsTitleColorChange(currentColor: newColor)
     }
     
     private func changeBackgroundColor() {
@@ -361,6 +362,15 @@ final class WishMakerViewController: UIViewController {
         self.sliderGreenVariable.backgroundColor = currentColor
         self.sliderBlueVariable.backgroundColor = currentColor
         BackgroundColorModel.shared.backgroundColor = currentColor
+        buttonsTitleColorChange(currentColor: currentColor)
+    }
+    
+    private func buttonsTitleColorChange(currentColor: UIColor) {
+        for button in topSliderButtons {
+            button.setTitleColor(currentColor, for: .normal)
+        }
+        addWishButton.setTitleColor(currentColor, for: .normal)
+        scheduleButton.setTitleColor(currentColor, for: .normal)
     }
     
     private func changeTitlesForLightBackground() {
@@ -389,6 +399,7 @@ final class WishMakerViewController: UIViewController {
         }
         self.view.layoutIfNeeded()
         hidingButton.setTitle("Show", for: .normal)
+        hidingButton.titleLabel?.textColor = BackgroundColorModel.shared.backgroundColor
     }
     
     private func buttonsMoveUp() {
@@ -397,6 +408,7 @@ final class WishMakerViewController: UIViewController {
         }
         self.view.layoutIfNeeded()
         hidingButton.setTitle("Hide", for: .normal)
+        hidingButton.titleLabel?.textColor = BackgroundColorModel.shared.backgroundColor
     }
     
     // MARK: - Actions
