@@ -36,7 +36,7 @@ final class WishMakerViewController: UIViewController {
         static let secretTitleFontSize: Double = 52
         
         static let buttonBottom: CGFloat = -20
-        static let addWishButtonBottom: CGFloat = -80
+        static let scheduleButtonBottom: CGFloat = -40
         static let buttonAnimatedBottom: CGFloat = 80
         static let buttonTrailing: CGFloat = -40
         static let secretButtonLeading: CGFloat = 40
@@ -61,6 +61,7 @@ final class WishMakerViewController: UIViewController {
     private let randomButton: UIButton = UIButton(type: .system)
     private let secretButton: UIButton = UIButton(type: .system)
     private let addWishButton: UIButton = UIButton(type: .system)
+    private let scheduleButton: UIButton = UIButton(type: .system)
     private let stack: UIStackView = UIStackView()
     private let titleLabel: UILabel = UILabel()
     private let secretTitle: UILabel = UILabel()
@@ -87,8 +88,8 @@ final class WishMakerViewController: UIViewController {
         view.backgroundColor = .black
         
         configureTitle()
+        configureScheduleButton()
         configureAddWishButton()
-        addWishButtonPressed()
         configureSliders()
         configureButtons()
         configureSecretTitle()
@@ -108,12 +109,33 @@ final class WishMakerViewController: UIViewController {
         ])
     }
     
+    private func configureScheduleButton() {
+        view.addSubview(scheduleButton)
+        scheduleButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            scheduleButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            scheduleButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: Constants.scheduleButtonBottom),
+            scheduleButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: Constants.buttonTrailing),
+            scheduleButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -Constants.buttonTrailing),
+            scheduleButton.heightAnchor.constraint(equalToConstant: Constants.buttonHeight)
+        ])
+        scheduleButton.layer.cornerRadius = Constants.buttonCornerRadius
+        scheduleButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: Constants.buttonFontSize)
+        scheduleButton.setTitleColor(.white, for: .normal)
+        scheduleButton.backgroundColor = .systemGray
+        scheduleButton.alpha = Constants.buttonAlpha
+        scheduleButton.setTitle("Schedule wish granting", for: .normal)
+        
+        scheduleButton.addTarget(self, action: #selector(scheduleButtonPressed), for: .touchUpInside)
+        
+    }
+    
     private func configureAddWishButton() {
         view.addSubview(addWishButton)
         addWishButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             addWishButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            addWishButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: Constants.addWishButtonBottom),
+            addWishButton.bottomAnchor.constraint(equalTo: scheduleButton.topAnchor, constant: Constants.buttonBottom),
             addWishButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: Constants.buttonTrailing),
             addWishButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -Constants.buttonTrailing),
             addWishButton.heightAnchor.constraint(equalToConstant: Constants.buttonHeight)
@@ -294,6 +316,7 @@ final class WishMakerViewController: UIViewController {
         hidingButton.isHidden = false
         randomButton.isHidden = false
         view.backgroundColor = .black
+        changeTitlesForDarkBackground()
         sliderRedVariable.backgroundColor = .black
         sliderGreenVariable.backgroundColor = .black
         sliderBlueVariable.backgroundColor = .black
@@ -460,6 +483,11 @@ final class WishMakerViewController: UIViewController {
     @objc
     private func addWishButtonPressed() {
         present(WishStoringViewController(), animated: true)
+    }
+    
+    @objc
+    private func scheduleButtonPressed() {
+        
     }
 }
 
