@@ -80,11 +80,11 @@ final class WrittenWishCell: UITableViewCell {
         
         wrap.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            wrap.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            wrap.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Constants.wrapOffsetLeading),
+            wrap.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            wrap.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.wrapOffsetLeading),
             wrap.trailingAnchor.constraint(equalTo: editButton.leadingAnchor, constant: -Constants.wrapOffsetTrailing),
-            wrap.topAnchor.constraint(equalTo: self.topAnchor, constant: Constants.wrapOffsetV),
-            wrap.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -Constants.wrapOffsetV)
+            wrap.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.wrapOffsetV),
+            wrap.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.wrapOffsetV)
         ])
     }
     
@@ -99,6 +99,8 @@ final class WrittenWishCell: UITableViewCell {
             wishLabel.trailingAnchor.constraint(equalTo: wrap.trailingAnchor, constant: -Constants.wishLabelOffsetH)
         ])
         wishLabel.font = UIFont.systemFont(ofSize: Constants.wishLabelViewFontSize)
+        wishLabel.numberOfLines = .zero
+        wishLabel.lineBreakMode = .byWordWrapping
         wishLabel.textColor = .black
     }
     

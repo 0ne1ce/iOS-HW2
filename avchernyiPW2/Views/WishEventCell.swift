@@ -15,13 +15,14 @@ final class WishEventCell: UICollectionViewCell {
         static let titleTopOffset: CGFloat = 15
         static let innerOffsetV: CGFloat = 5
         static let innerOffsetH: CGFloat = 10
-        static let cornerRadius: CGFloat = 15
+        static let wrapCornerRadius: CGFloat = 15
         static let backgroundColor: UIColor = .white
         static let wrapSize: CGFloat = 100
         
         static let fontSize: CGFloat = 16
         
         static let labelHeight: CGFloat = 20
+        static let labelCornerRadius: CGFloat = 5
         
     }
     // MARK: - Properties
@@ -68,7 +69,7 @@ final class WishEventCell: UICollectionViewCell {
             wrapView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -Constants.offset)
         ])
         
-        wrapView.layer.cornerRadius = Constants.cornerRadius
+        wrapView.layer.cornerRadius = Constants.wrapCornerRadius
         wrapView.backgroundColor = Constants.backgroundColor
         
     }
@@ -84,6 +85,10 @@ final class WishEventCell: UICollectionViewCell {
         ])
         titleLabel.font = UIFont.systemFont(ofSize: Constants.fontSize)
         titleLabel.textColor = .black
+        
+        titleLabel.backgroundColor = .lightGray.withAlphaComponent(0.7)
+        titleLabel.layer.masksToBounds = true
+        titleLabel.layer.cornerRadius = Constants.labelCornerRadius
     }
     
     private func configureDescriptionLabel() {
@@ -98,6 +103,10 @@ final class WishEventCell: UICollectionViewCell {
         ])
         descriptionLabel.font = UIFont.systemFont(ofSize: Constants.fontSize)
         descriptionLabel.textColor = .black
+        
+        descriptionLabel.backgroundColor = .lightGray.withAlphaComponent(0.7)
+        descriptionLabel.layer.masksToBounds = true
+        descriptionLabel.layer.cornerRadius = Constants.labelCornerRadius
     }
     
     private func configureStartDateLabel() {
@@ -112,6 +121,10 @@ final class WishEventCell: UICollectionViewCell {
         ])
         startDateLabel.font = UIFont.systemFont(ofSize: Constants.fontSize)
         startDateLabel.textColor = .black
+        
+        startDateLabel.backgroundColor = .lightGray.withAlphaComponent(0.7)
+        startDateLabel.layer.masksToBounds = true
+        startDateLabel.layer.cornerRadius = Constants.labelCornerRadius
     }
     
     private func configureEndDateLabel() {
@@ -120,12 +133,15 @@ final class WishEventCell: UICollectionViewCell {
         endDateLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             endDateLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: Constants.innerOffsetV),
-            endDateLabel.trailingAnchor.constraint(equalTo: wrapView.trailingAnchor, constant: Constants.innerOffsetV),
+            endDateLabel.trailingAnchor.constraint(equalTo: wrapView.trailingAnchor, constant: -Constants.innerOffsetH),
             endDateLabel.heightAnchor.constraint(equalToConstant: Constants.labelHeight),
             endDateLabel.leadingAnchor.constraint(equalTo: self.centerXAnchor)
         ])
         endDateLabel.font = UIFont.systemFont(ofSize: Constants.fontSize)
         endDateLabel.textColor = .red
+        
+        endDateLabel.backgroundColor = .lightGray.withAlphaComponent(0.7)
+        endDateLabel.layer.masksToBounds = true
+        endDateLabel.layer.cornerRadius = Constants.labelCornerRadius
     }
-    
 }

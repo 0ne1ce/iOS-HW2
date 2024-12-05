@@ -13,13 +13,17 @@ final class WishCalendarViewController: UIViewController {
     private enum Constants {
         static let contentInset: UIEdgeInsets = UIEdgeInsets()
         static let collectionTop: CGFloat = 40
+        
+        static let plusButtonFontSize: CGFloat = 30
+        static let plusButtonSize: CGFloat = 50
     }
     
-    // MARK: - Variables
+    // MARK: - Properties
     private let collectionView: UICollectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: UICollectionViewFlowLayout()
     )
+    private let plusButton: UIButton = UIButton(type: .system)
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -30,6 +34,7 @@ final class WishCalendarViewController: UIViewController {
     private func configureUI() {
         view.backgroundColor = .white
         configureCollection()
+        configurePlusButton()
     }
     
     private func configureCollection() {
@@ -53,6 +58,26 @@ final class WishCalendarViewController: UIViewController {
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
+    }
+    
+    private func configurePlusButton() {
+        plusButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            plusButton.heightAnchor.constraint(equalToConstant: Constants.plusButtonSize),
+            plusButton.widthAnchor.constraint(equalToConstant: Constants.plusButtonSize)
+        ])
+        plusButton.setTitle("+", for: .normal)
+        plusButton.titleLabel?.font = UIFont.systemFont(ofSize: Constants.plusButtonFontSize)
+        plusButton.setTitleColor(.systemBlue, for: .normal)
+        plusButton.backgroundColor = .clear
+        plusButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: plusButton)
+    }
+    
+    // MARK: - Actions
+    @objc
+    private func plusButtonTapped() {
+        present(WishEventCreationView(), animated: true)
     }
 }
 
