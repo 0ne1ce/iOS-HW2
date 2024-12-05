@@ -292,6 +292,7 @@
 				DEVELOPMENT_TEAM = Y8JWN96XN8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = avchernyiPW2/Info.plist;
+				INFOPLIST_KEY_NSCalendarsUsageDescription = "Calendar access is very important for time management and teaching assistant";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -320,6 +321,7 @@
 				DEVELOPMENT_TEAM = Y8JWN96XN8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = avchernyiPW2/Info.plist;
+				INFOPLIST_KEY_NSCalendarsUsageDescription = "Calendar access is very important for time management and teaching assistant";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
