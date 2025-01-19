@@ -11,7 +11,7 @@ import UIKit
 final class WishEventCell: UICollectionViewCell {
     // MARK: - Constants
     private enum Constants {
-        static let offset: CGFloat = 20
+        static let offset: CGFloat = 10
         static let titleTopOffset: CGFloat = 15
         static let innerOffsetV: CGFloat = 5
         static let innerOffsetH: CGFloat = 10
@@ -19,9 +19,9 @@ final class WishEventCell: UICollectionViewCell {
         static let backgroundColor: UIColor = .white
         static let wrapSize: CGFloat = 100
         
-        static let fontSize: CGFloat = 16
+        static let fontSize: CGFloat = 20
         
-        static let labelHeight: CGFloat = 20
+        static let labelHeight: CGFloat = 30
         static let labelCornerRadius: CGFloat = 5
         
     }
@@ -54,7 +54,7 @@ final class WishEventCell: UICollectionViewCell {
     func configure(with event: WishEventModel) {
         titleLabel.text = event.title
         descriptionLabel.text = event.description
-        startDateLabel.text = "Start Date: \(event.startDate)"
+        startDateLabel.text = "Date: \(event.startDate)"
         endDateLabel.text = "End Date: \(event.endDate)"
     }
     
@@ -85,10 +85,6 @@ final class WishEventCell: UICollectionViewCell {
         ])
         titleLabel.font = UIFont.systemFont(ofSize: Constants.fontSize)
         titleLabel.textColor = .black
-        
-        titleLabel.backgroundColor = .lightGray.withAlphaComponent(0.7)
-        titleLabel.layer.masksToBounds = true
-        titleLabel.layer.cornerRadius = Constants.labelCornerRadius
     }
     
     private func configureDescriptionLabel() {
@@ -103,10 +99,6 @@ final class WishEventCell: UICollectionViewCell {
         ])
         descriptionLabel.font = UIFont.systemFont(ofSize: Constants.fontSize)
         descriptionLabel.textColor = .black
-        
-        descriptionLabel.backgroundColor = .lightGray.withAlphaComponent(0.7)
-        descriptionLabel.layer.masksToBounds = true
-        descriptionLabel.layer.cornerRadius = Constants.labelCornerRadius
     }
     
     private func configureStartDateLabel() {
@@ -121,10 +113,6 @@ final class WishEventCell: UICollectionViewCell {
         ])
         startDateLabel.font = UIFont.systemFont(ofSize: Constants.fontSize)
         startDateLabel.textColor = .black
-        
-        startDateLabel.backgroundColor = .lightGray.withAlphaComponent(0.7)
-        startDateLabel.layer.masksToBounds = true
-        startDateLabel.layer.cornerRadius = Constants.labelCornerRadius
     }
     
     private func configureEndDateLabel() {
@@ -139,9 +127,5 @@ final class WishEventCell: UICollectionViewCell {
         ])
         endDateLabel.font = UIFont.systemFont(ofSize: Constants.fontSize)
         endDateLabel.textColor = .red
-        
-        endDateLabel.backgroundColor = .lightGray.withAlphaComponent(0.7)
-        endDateLabel.layer.masksToBounds = true
-        endDateLabel.layer.cornerRadius = Constants.labelCornerRadius
     }
 }

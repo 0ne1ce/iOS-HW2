@@ -33,7 +33,7 @@
 		8A3D02B52CCEAE1100386090 /* Exceptions for "avchernyiPW2" folder in "avchernyiPW2" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				App/Info.plist,
 			);
 			target = 8A3D028C2CCEAE0E00386090 /* avchernyiPW2 */;
 		};

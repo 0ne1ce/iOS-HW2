@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 final class BackgroundColorModel {
+    // MARK: - Properties
     static let shared = BackgroundColorModel()
     var backgroundColor: UIColor = .black
     var titleColor: UIColor = .white
