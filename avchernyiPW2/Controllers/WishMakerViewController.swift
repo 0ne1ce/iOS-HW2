@@ -300,6 +300,8 @@ final class WishMakerViewController: UIViewController {
     }
     
     private func secretBackground() {
+        addWishButton.titleLabel?.textColor = Constants.secretColor
+        scheduleWishButton.titleLabel?.textColor = Constants.secretColor
         stack.isHidden = true
         titleLabel.isHidden = true
         secretButton.isHidden = true
@@ -311,6 +313,10 @@ final class WishMakerViewController: UIViewController {
     }
     
     private func originalBackground() {
+        addWishButton.titleLabel?.textColor = .black
+        scheduleWishButton.titleLabel?.textColor = .black
+        hidingButton.titleLabel?.textColor = .black
+        randomButton.titleLabel?.textColor = .black
         stack.isHidden = false
         titleLabel.isHidden = false
         hidingButton.isHidden = false
@@ -394,6 +400,7 @@ final class WishMakerViewController: UIViewController {
     }
     
     private func buttonsMoveDown() {
+        triggerSelectionFeedback()
         for i in 0..<buttonBottomConstraints.count {
             buttonBottomConstraints[i].constant = Constants.buttonAnimatedBottom
         }
@@ -403,12 +410,19 @@ final class WishMakerViewController: UIViewController {
     }
     
     private func buttonsMoveUp() {
+        triggerSelectionFeedback()
         for i in 0..<buttonBottomConstraints.count {
             buttonBottomConstraints[i].constant = Constants.buttonBottom
         }
         self.view.layoutIfNeeded()
         hidingButton.setTitle("Hide", for: .normal)
         hidingButton.titleLabel?.textColor = BackgroundColorModel.shared.backgroundColor
+    }
+    
+    private func triggerSelectionFeedback() {
+        let generator = UISelectionFeedbackGenerator()
+        generator.prepare()
+        generator.selectionChanged()
     }
     
     // MARK: - Actions
@@ -440,6 +454,7 @@ final class WishMakerViewController: UIViewController {
     
     @objc
     private func randomButtonPressed(_ sender: UIButton) {
+        triggerSelectionFeedback()
         UIView.animate(
             withDuration: Constants.colorSwitchTime,
             animations: {[self] in
@@ -453,6 +468,7 @@ final class WishMakerViewController: UIViewController {
     
     @objc
     private func secretButtonPressed(_ sender: UIButton) {
+        triggerSelectionFeedback()
         if (secretButtonCounter % 2 == 0) {
             UIView.animate(
                 withDuration: Constants.secretAnimationTime,
@@ -464,6 +480,7 @@ final class WishMakerViewController: UIViewController {
                     self?.secretButton.isEnabled = true
                 })
             DispatchQueue.main.asyncAfter(deadline: .now() + Constants.secretAnimationTime) {
+                self.secretButton.titleLabel?.textColor = Constants.secretColor
                 self.secretButton.isHidden = false
             }
             sliderRedVariable.backgroundColor = Constants.secretColor
@@ -472,6 +489,7 @@ final class WishMakerViewController: UIViewController {
             secretButtonCounter += 1
         }
         else {
+            secretButton.setTitleColor(.black, for: .normal)
             sliderRedVariable.slider.setValue(0, animated: false)
             sliderGreenVariable.slider.setValue(0, animated: false)
             sliderBlueVariable.slider.setValue(0, animated: false)
@@ -494,11 +512,13 @@ final class WishMakerViewController: UIViewController {
     
     @objc
     private func addWishButtonPressed() {
+        self.triggerSelectionFeedback()
         present(WishStoringViewController(), animated: true)
     }
     
     @objc
     private func scheduleWishButtonPressed() {
+        self.triggerSelectionFeedback()
         let vc = WishCalendarViewController()
         navigationController?.pushViewController(vc, animated: true)
     }
